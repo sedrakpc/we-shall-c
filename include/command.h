@@ -7,4 +7,6 @@
 
 int isValidCommand(char* command);
 
+int processCommand(char* command, char* args[], int argsCount);
+
 #endif //CODECRAFTERS_SHELL_C_COMMAND_H
