@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include "../include/command.h"
 
 int main() {
@@ -28,6 +29,9 @@ int main() {
             token = strtok(NULL, delimiters);
         }
         command = args[0];
+        for (int i = 0; command[i]; i++) {
+            command[i] = tolower(command[i]);
+        }
         if (isValidCommand(command)) {
           processCommand(command, args, argsCount);
         } else {
