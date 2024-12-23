@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include "../include/command.h"
@@ -6,7 +7,8 @@
 int main() {
     // Flush after every printf
     setbuf(stdout, NULL);
-
+    char* path = getenv("PATH");
+    setPath(path);
     while(1) {
         // Uncomment this block to pass the first stage
         printf("$ ");
@@ -18,10 +20,6 @@ int main() {
         char *args[10]; // Array to command line arguments
         char *command;
         fgets(input, 100, stdin);
-        //    int len = strlen(input);
-        //    if (len > 0 && input[len - 1] == '\n') {
-        //      input[len - 1] = '\0';
-        //    }
         token = strtok(input, delimiters);
         while (token != NULL) {
             args[argsCount] = token;
@@ -32,6 +30,7 @@ int main() {
         for (int i = 0; command[i]; i++) {
             command[i] = tolower(command[i]);
         }
+        reloadPathCommands();
         if (isValidCommand(command)) {
           processCommand(command, args, argsCount);
         } else {
