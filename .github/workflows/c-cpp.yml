@@ -14,3 +14,4 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: make
+      run: echo "This is an empty step"
