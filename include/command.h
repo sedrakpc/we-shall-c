@@ -9,7 +9,7 @@ void setPath(char* path);
 
 int isValidCommand(char* command);
 
-int processCommand(char* command, char* args[], int argsCount);
+int processCommand(char* command, char* args[], int argsCount, FILE* outputFile);
 
 int reloadPathCommands();
 
