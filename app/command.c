@@ -21,22 +21,22 @@ char COMMANDS[5][10] = {
 };
 ArrayList *PATH_COMMANDS;
 int NUMBER_OF_SUPPORTED_COMMANDS = sizeof(COMMANDS) / sizeof(COMMANDS[0]);
-char* PATH_DELIMITERS = ":";
-char* PATH_ENV = "/usr/bin";
+char *PATH_DELIMITERS = ":";
+char *PATH_ENV = "/usr/bin";
 
-void executeCommand(char *path, char* args[], FILE* outputFile);
+void executeCommand(char *path, char *args[], FILE *outputFile);
 
-void setPath(char* path) {
+void setPath(char *path) {
     PATH_ENV = path;
 }
 
-int isValidCommand(char* command) {
+int isValidCommand(char *command) {
     for (int i = 0; i < NUMBER_OF_SUPPORTED_COMMANDS; i++) {
         if (strcmp(command, COMMANDS[i]) == 0) {
             return 1;
         }
     }
-    for(int i = 0; i < PATH_COMMANDS->size; i++) {
+    for (int i = 0; i < PATH_COMMANDS->size; i++) {
 //        data contains command and path separated by ':'
         char *path_cmd = strtok(PATH_COMMANDS->data[i], PATH_DELIMITERS);
         if (strcasecmp(command, path_cmd) == 0) {
@@ -46,7 +46,7 @@ int isValidCommand(char* command) {
     return 0;
 }
 
-int validateArguments(char* command, char* args[], int argsCount) {
+int validateArguments(char *command, char *args[], int argsCount) {
     if (strcasecmp(command, "exit") == 0) {
         if (argsCount < 2) {
             printf("invalid number of arguments\n");
@@ -76,7 +76,7 @@ int validateArguments(char* command, char* args[], int argsCount) {
     return 1;
 }
 
-int processCommand(char* command, char* args[], int argsCount, FILE* outputFile) {
+int processCommand(char *command, char *args[], int argsCount, FILE *outputFile) {
     reloadPathCommands();
     if (strcasecmp(command, "exit") == 0) {
         if (validateArguments(command, args, argsCount)) {
@@ -86,14 +86,14 @@ int processCommand(char* command, char* args[], int argsCount, FILE* outputFile)
         if (validateArguments(command, args, argsCount)) {
             char cwd[1000];
             if (getcwd(cwd, sizeof(cwd)) != NULL) {
-                if(outputFile != NULL) {
+                if (outputFile != NULL) {
                     fprintf(outputFile, "%s\n", cwd);
                 } else {
                     printf("%s\n", cwd);
                 }
             }
         }
-    }  else if (strcasecmp(command, "cd") == 0) {
+    } else if (strcasecmp(command, "cd") == 0) {
         if (validateArguments(command, args, argsCount)) {
             char *home_dir = getenv("HOME");
             char *new_dir = args[1];
@@ -101,7 +101,7 @@ int processCommand(char* command, char* args[], int argsCount, FILE* outputFile)
                 new_dir = home_dir;
             }
             if (chdir(new_dir) != 0) {
-                if(outputFile != NULL) {
+                if (outputFile != NULL) {
                     fprintf(outputFile, "cd: %s: No such file or directory\n", args[1]);
                 } else {
                     printf("cd: %s: No such file or directory\n", args[1]);
@@ -111,24 +111,24 @@ int processCommand(char* command, char* args[], int argsCount, FILE* outputFile)
     } else if (strcasecmp(command, "echo") == 0) {
         if (validateArguments(command, args, argsCount)) {
             for (int i = 1; i < argsCount; i++) {
-                if(outputFile != NULL) {
+                if (outputFile != NULL) {
                     fprintf(outputFile, "%s ", args[i]);
                 } else {
                     printf("%s ", args[i]);
                 }
             }
-            if(outputFile != NULL) {
+            if (outputFile != NULL) {
                 fprintf(outputFile, "\n");
             } else {
                 printf("\n");
             }
             return 1;
         }
-    } else if(strcasecmp(command, "type") == 0) {
+    } else if (strcasecmp(command, "type") == 0) {
         if (validateArguments(command, args, argsCount)) {
-            for(int i = 0; i < NUMBER_OF_SUPPORTED_COMMANDS; i++) {
+            for (int i = 0; i < NUMBER_OF_SUPPORTED_COMMANDS; i++) {
                 if (strcasecmp(args[1], COMMANDS[i]) == 0) {
-                    if(outputFile != NULL) {
+                    if (outputFile != NULL) {
                         fprintf(outputFile, "%s is a shell builtin\n", args[1]);
                     } else {
                         printf("%s is a shell builtin\n", args[1]);
@@ -136,13 +136,13 @@ int processCommand(char* command, char* args[], int argsCount, FILE* outputFile)
                     return 1;
                 }
             }
-            for(int i = 0; i < PATH_COMMANDS->size; i++) {
+            for (int i = 0; i < PATH_COMMANDS->size; i++) {
                 char *temp = malloc(strlen(PATH_COMMANDS->data[i]) + 1);
                 strcpy(temp, PATH_COMMANDS->data[i]);
                 char *path_cmd = strtok(temp, PATH_DELIMITERS);
                 char *path = strtok(NULL, PATH_DELIMITERS);
                 if (strcasecmp(args[1], path_cmd) == 0) {
-                    if(outputFile != NULL) {
+                    if (outputFile != NULL) {
                         fprintf(outputFile, "%s is %s\n", path_cmd, path);
                     } else {
                         printf("%s is %s\n", path_cmd, path);
@@ -152,7 +152,7 @@ int processCommand(char* command, char* args[], int argsCount, FILE* outputFile)
                 }
                 free(temp);
             }
-            if(outputFile != NULL) {
+            if (outputFile != NULL) {
                 fprintf(outputFile, "%s: not found\n", args[1]);
             } else {
                 printf("%s: not found\n", args[1]);
@@ -160,7 +160,7 @@ int processCommand(char* command, char* args[], int argsCount, FILE* outputFile)
         }
     } else {
 //        printf("%s: trying to run\n", command);
-        for(int i = 0; i < PATH_COMMANDS->size; i++) {
+        for (int i = 0; i < PATH_COMMANDS->size; i++) {
             char *temp = malloc(strlen(PATH_COMMANDS->data[i]) + 1);
             strcpy(temp, PATH_COMMANDS->data[i]);
             char *path_cmd = strtok(temp, PATH_DELIMITERS);
@@ -178,7 +178,7 @@ int processCommand(char* command, char* args[], int argsCount, FILE* outputFile)
 }
 
 
-char** createNullTerminatedArray(char *arr[], size_t count) {
+char **createNullTerminatedArray(char *arr[], size_t count) {
     // Allocate an extra element for the NULL terminator
     char **new_arr = malloc(sizeof(char *) * (count + 1));
     if (!new_arr) {
@@ -196,7 +196,7 @@ char** createNullTerminatedArray(char *arr[], size_t count) {
     return new_arr;
 }
 
-void executeCommand(char *path, char* args[], FILE* outputFile) {
+void executeCommand(char *path, char *args[], FILE *outputFile) {
     int pipe_fd[2];
     pid_t pid;
     char buffer[BUFFER_SIZE];
@@ -261,7 +261,7 @@ int reloadPathCommands() {
     PATH_COMMANDS = createArrayList(1000);
     DIR *d;
     struct dirent *dir;
-    char* path = strdup(PATH_ENV);
+    char *path = strdup(PATH_ENV);
     char *token = strtok(path, PATH_DELIMITERS);
 //    printf("Token: %s\n", token);
     while (token != NULL) {

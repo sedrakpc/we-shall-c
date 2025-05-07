@@ -5,11 +5,11 @@
 #ifndef CODECRAFTERS_SHELL_C_COMMAND_H
 #define CODECRAFTERS_SHELL_C_COMMAND_H
 
-void setPath(char* path);
+void setPath(char *path);
 
-int isValidCommand(char* command);
+int isValidCommand(char *command);
 
-int processCommand(char* command, char* args[], int argsCount, FILE* outputFile);
+int processCommand(char *command, char *args[], int argsCount, FILE *outputFile);
 
 int reloadPathCommands();
 

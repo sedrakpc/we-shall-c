@@ -4,16 +4,16 @@
 #include "../include/debug.h"
 #include "../include/array_list.h"
 
-ArrayList* createArrayList(int capacity) {
-    ArrayList* list = (ArrayList*)malloc(sizeof(ArrayList));
+ArrayList *createArrayList(int capacity) {
+    ArrayList *list = (ArrayList *) malloc(sizeof(ArrayList));
     list->data = malloc(capacity * sizeof(char *));
     list->size = 0;
     list->capacity = capacity;
     return list;
 }
 
-void append(ArrayList* list, char* element) {
-    if(list->size == list->capacity) {
+void append(ArrayList *list, char *element) {
+    if (list->size == list->capacity) {
         list->capacity *= 2;
         TRACE(("Reallocating memory to %d\n", list->capacity));
         list->data = realloc(list->data, list->capacity * sizeof(char *));
@@ -23,7 +23,7 @@ void append(ArrayList* list, char* element) {
     ++list->size;
 }
 
-void print(ArrayList* list) {
+void print(ArrayList *list) {
     printf("[");
     for (int i = 0; i < list->size; i++) {
         printf("%s", list->data[i]);
@@ -34,7 +34,7 @@ void print(ArrayList* list) {
     printf("]\n");
 }
 
-void freeArrayList(ArrayList* list) {
+void freeArrayList(ArrayList *list) {
     free(list->data);
     free(list);
 }

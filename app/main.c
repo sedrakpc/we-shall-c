@@ -10,9 +10,9 @@ char *getStdOutFileName(char **pString, int count);
 int main() {
     // Flush after every printf
     setbuf(stdout, NULL);
-    char* path = getenv("PATH");
+    char *path = getenv("PATH");
     setPath(path);
-    while(1) {
+    while (1) {
         printf("$ ");
         // Wait for user input
         int inputSize = 200;
@@ -25,11 +25,11 @@ int main() {
         for (int i = 0; command[i]; i++) {
             command[i] = tolower(command[i]);
         }
-        char* stdOutFile = getStdOutFileName(args, args_count);
+        char *stdOutFile = getStdOutFileName(args, args_count);
         reloadPathCommands();
         if (isValidCommand(command)) {
             FILE *file = NULL;
-            if(stdOutFile != NULL) {
+            if (stdOutFile != NULL) {
                 char cmd[1024];
                 char *folder = strdup(stdOutFile);
                 char *last_slash = strrchr(folder, '/');
@@ -45,11 +45,11 @@ int main() {
                 }
             }
             processCommand(command, args, args_count, file);
-            if(file != NULL) {
+            if (file != NULL) {
                 fclose(file);
             }
         } else {
-          printf("%s: command not found\n", command);
+            printf("%s: command not found\n", command);
         }
         free_args(args, args_count);
     }

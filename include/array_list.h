@@ -12,9 +12,12 @@ typedef struct {
     char **data;
 } ArrayList;
 
-ArrayList* createArrayList(int capacity);
-void append(ArrayList* list, char* element);
-void print(ArrayList* list);
-void freeArrayList(ArrayList* list);
+ArrayList *createArrayList(int capacity);
+
+void append(ArrayList *list, char *element);
+
+void print(ArrayList *list);
+
+void freeArrayList(ArrayList *list);
 
 #endif //CODECRAFTERS_SHELL_C_ARRAY_LIST_H

@@ -6,8 +6,8 @@
 #define MAX_ARGS 64
 #define MAX_ARG_LEN 256
 
-char** parse_cmdline(const char* cmdline, int* argc) {
-    char** argv = malloc(MAX_ARGS * sizeof(char*));
+char **parse_cmdline(const char *cmdline, int *argc) {
+    char **argv = malloc(MAX_ARGS * sizeof(char *));
     for (int i = 0; i < MAX_ARGS; i++) {
         argv[i] = malloc(MAX_ARG_LEN * sizeof(char));
     }
@@ -87,7 +87,7 @@ char** parse_cmdline(const char* cmdline, int* argc) {
     return argv;
 }
 
-void free_args(char** argv, int argc) {
+void free_args(char **argv, int argc) {
     for (int i = 0; i < argc; i++) {
         free(argv[i]);
     }
